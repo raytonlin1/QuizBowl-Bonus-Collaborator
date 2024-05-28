@@ -5,6 +5,7 @@ import { CreateUserInput } from './dto/create-user.input';
 import { UpdateUserInput } from './dto/update-user.input';
 
 @Resolver(() => User)
+// Where we resolve all queries that return the User object type
 export class UsersResolver {
   constructor(private readonly usersService: UsersService) {}
 

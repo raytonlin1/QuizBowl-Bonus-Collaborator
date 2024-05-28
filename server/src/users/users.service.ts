@@ -3,6 +3,7 @@ import { CreateUserInput } from './dto/create-user.input';
 import { UpdateUserInput } from './dto/update-user.input';
 
 @Injectable()
+// Contains the GraphQL requests
 export class UsersService {
   create(createUserInput: CreateUserInput) {
     return 'This action adds a new user';
