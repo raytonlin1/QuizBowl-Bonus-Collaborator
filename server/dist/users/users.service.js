@@ -5,28 +5,48 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UsersService = void 0;
 const common_1 = require("@nestjs/common");
+const bcrypt = require("bcrypt");
+const users_repository_1 = require("./users.repository");
 let UsersService = class UsersService {
-    create(createUserInput) {
-        return 'This action adds a new user';
+    constructor(usersRepository) {
+        this.usersRepository = usersRepository;
     }
-    findAll() {
-        return `This action returns all users`;
+    async create(createUserInput) {
+        return this.usersRepository.create({
+            ...createUserInput,
+            password: await this.hashPassword(createUserInput.password),
+        });
     }
-    findOne(id) {
-        return `This action returns a #${id} user`;
+    async hashPassword(password) {
+        return bcrypt.hash(password, 10);
     }
-    update(id, updateUserInput) {
-        return `This action updates a #${id} user`;
+    async findAll() {
+        return this.usersRepository.find({});
     }
-    remove(id) {
-        return `This action removes a #${id} user`;
+    async findOne(_id) {
+        return this.usersRepository.findOne({ _id });
+    }
+    async update(_id, updateUserInput) {
+        return this.usersRepository.findOneAndUpdate({ _id }, {
+            $set: {
+                ...updateUserInput,
+                password: await this.hashPassword(updateUserInput.password),
+            },
+        });
+    }
+    async remove(_id) {
+        return this.usersRepository.findOneAndDelete({ _id });
     }
 };
 exports.UsersService = UsersService;
 exports.UsersService = UsersService = __decorate([
-    (0, common_1.Injectable)()
+    (0, common_1.Injectable)(),
+    __metadata("design:paramtypes", [users_repository_1.UsersRepository])
 ], UsersService);
 //# sourceMappingURL=users.service.js.map

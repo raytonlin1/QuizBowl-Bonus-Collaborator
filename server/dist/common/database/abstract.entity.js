@@ -9,20 +9,20 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.CreateUserInput = void 0;
+exports.AbstractEntity = void 0;
 const graphql_1 = require("@nestjs/graphql");
-let CreateUserInput = class CreateUserInput {
+const mongoose_1 = require("@nestjs/mongoose");
+const mongoose_2 = require("mongoose");
+let AbstractEntity = class AbstractEntity {
 };
-exports.CreateUserInput = CreateUserInput;
+exports.AbstractEntity = AbstractEntity;
 __decorate([
-    (0, graphql_1.Field)(),
-    __metadata("design:type", String)
-], CreateUserInput.prototype, "email", void 0);
-__decorate([
-    (0, graphql_1.Field)(),
-    __metadata("design:type", String)
-], CreateUserInput.prototype, "password", void 0);
-exports.CreateUserInput = CreateUserInput = __decorate([
-    (0, graphql_1.InputType)()
-], CreateUserInput);
-//# sourceMappingURL=create-user.input.js.map
+    (0, mongoose_1.Prop)({ type: mongoose_2.SchemaTypes.ObjectId }),
+    (0, graphql_1.Field)(() => graphql_1.ID),
+    __metadata("design:type", mongoose_2.Types.ObjectId)
+], AbstractEntity.prototype, "_id", void 0);
+exports.AbstractEntity = AbstractEntity = __decorate([
+    (0, mongoose_1.Schema)(),
+    (0, graphql_1.ObjectType)({ isAbstract: true })
+], AbstractEntity);
+//# sourceMappingURL=abstract.entity.js.map

@@ -1,27 +1,46 @@
 import { Injectable } from '@nestjs/common';
+import * as bcrypt from 'bcrypt';
 import { CreateUserInput } from './dto/create-user.input';
 import { UpdateUserInput } from './dto/update-user.input';
+import { UsersRepository } from './users.repository';
 
 @Injectable()
-// Contains the GraphQL requests
 export class UsersService {
-  create(createUserInput: CreateUserInput) {
-    return 'This action adds a new user';
+  //Contains the GraphQL requests
+  constructor(private readonly usersRepository: UsersRepository) {}
+
+  async create(createUserInput: CreateUserInput) {
+    return this.usersRepository.create({
+      ...createUserInput,
+      password: await this.hashPassword(createUserInput.password),
+    });
   }
 
-  findAll() {
-    return `This action returns all users`;
+  private async hashPassword(password: string) {
+    return bcrypt.hash(password, 10);
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
+  async findAll() {
+    return this.usersRepository.find({});
   }
 
-  update(id: number, updateUserInput: UpdateUserInput) {
-    return `This action updates a #${id} user`;
+  async findOne(_id: string) {
+    return this.usersRepository.findOne({ _id });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+  async update(_id: string, updateUserInput: UpdateUserInput) {
+    return this.usersRepository.findOneAndUpdate(
+      { _id },
+      {
+        $set: {
+          ...updateUserInput,
+          password: await this.hashPassword(updateUserInput.password),
+        },
+      },
+    );
+  }
+
+  async remove(_id: string) {
+    return this.usersRepository.findOneAndDelete({ _id });
   }
 }

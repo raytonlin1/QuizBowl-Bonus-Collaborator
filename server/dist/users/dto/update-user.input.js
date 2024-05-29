@@ -16,9 +16,9 @@ let UpdateUserInput = class UpdateUserInput extends (0, graphql_1.PartialType)(c
 };
 exports.UpdateUserInput = UpdateUserInput;
 __decorate([
-    (0, graphql_1.Field)(() => graphql_1.Int),
-    __metadata("design:type", Number)
-], UpdateUserInput.prototype, "id", void 0);
+    (0, graphql_1.Field)(),
+    __metadata("design:type", String)
+], UpdateUserInput.prototype, "_id", void 0);
 exports.UpdateUserInput = UpdateUserInput = __decorate([
     (0, graphql_1.InputType)()
 ], UpdateUserInput);

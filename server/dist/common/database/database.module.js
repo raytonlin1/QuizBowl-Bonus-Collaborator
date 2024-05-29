@@ -11,6 +11,9 @@ const common_1 = require("@nestjs/common");
 const config_1 = require("@nestjs/config");
 const mongoose_1 = require("@nestjs/mongoose");
 let DatabaseModule = class DatabaseModule {
+    static forFeature(models) {
+        return mongoose_1.MongooseModule.forFeature(models);
+    }
 };
 exports.DatabaseModule = DatabaseModule;
 exports.DatabaseModule = DatabaseModule = __decorate([
@@ -23,6 +26,7 @@ exports.DatabaseModule = DatabaseModule = __decorate([
                 inject: [config_1.ConfigService],
             }),
         ],
+        providers: [],
     })
 ], DatabaseModule);
 //# sourceMappingURL=database.module.js.map

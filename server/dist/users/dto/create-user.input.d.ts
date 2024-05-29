@@ -1,3 +1,4 @@
 export declare class CreateUserInput {
-    exampleField: number;
+    email: string;
+    password: string;
 }

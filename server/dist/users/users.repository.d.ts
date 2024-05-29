@@ -21,16 +21,13 @@
 /// <reference types="mongoose/types/utility" />
 /// <reference types="mongoose/types/validation" />
 /// <reference types="mongoose/types/virtuals" />
-/// <reference types="mongoose" />
 /// <reference types="mongoose/types/inferschematype" />
 /// <reference types="mongoose/types/inferrawdoctype" />
-import { AbstractEntity } from '../../common/database/abstract.entity';
-export declare class User extends AbstractEntity {
-    email: string;
-    password: string;
+import { Logger } from '@nestjs/common';
+import { AbstractRepository } from '../common/database/abstract.repository';
+import { User } from './entities/user.entity';
+import { Model } from 'mongoose';
+export declare class UsersRepository extends AbstractRepository<User> {
+    protected readonly logger: Logger;
+    constructor(userModel: Model<User>);
 }
-export declare const UserSchema: import("mongoose").Schema<User, import("mongoose").Model<User, any, any, any, import("mongoose").Document<unknown, any, User> & User & Required<{
-    _id: import("mongoose").Types.ObjectId;
-}>, any>, {}, {}, {}, {}, import("mongoose").DefaultSchemaOptions, User, import("mongoose").Document<unknown, {}, import("mongoose").FlatRecord<User>> & import("mongoose").FlatRecord<User> & Required<{
-    _id: import("mongoose").Types.ObjectId;
-}>>;

@@ -1,12 +1,13 @@
 import { UsersService } from './users.service';
+import { User } from './entities/user.entity';
 import { CreateUserInput } from './dto/create-user.input';
 import { UpdateUserInput } from './dto/update-user.input';
 export declare class UsersResolver {
     private readonly usersService;
     constructor(usersService: UsersService);
-    createUser(createUserInput: CreateUserInput): string;
-    findAll(): string;
-    findOne(id: number): string;
-    updateUser(updateUserInput: UpdateUserInput): string;
-    removeUser(id: number): string;
+    createUser(createUserInput: CreateUserInput): Promise<User>;
+    findAll(): Promise<User[]>;
+    findOne(_id: string): Promise<User>;
+    updateUser(updateUserInput: UpdateUserInput): Promise<User>;
+    removeUser(_id: string): Promise<User>;
 }
