@@ -27,7 +27,7 @@ const useLogin = () => {
       return;
     }
     setError("");
-    await client.refetchQueries({ include: "active" });
+    await client.refetchQueries({ include: "active" }); //Queries refetch so logged in users are given even if it was already attempted to be fetched
   };
 
   return { login, error };
