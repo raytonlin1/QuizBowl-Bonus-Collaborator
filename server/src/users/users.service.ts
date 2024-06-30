@@ -1,4 +1,8 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  Injectable,
+  UnauthorizedException,
+  UnprocessableEntityException,
+} from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 import { CreateUserInput } from './dto/create-user.input';
 import { UpdateUserInput } from './dto/update-user.input';
@@ -6,14 +10,21 @@ import { UsersRepository } from './users.repository';
 
 @Injectable()
 export class UsersService {
-  //Contains the GraphQL requests
+  // Contains the GraphQL requests
   constructor(private readonly usersRepository: UsersRepository) {}
 
   async create(createUserInput: CreateUserInput) {
-    return this.usersRepository.create({
-      ...createUserInput,
-      password: await this.hashPassword(createUserInput.password),
-    });
+    try {
+      return await this.usersRepository.create({
+        ...createUserInput,
+        password: await this.hashPassword(createUserInput.password),
+      });
+    } catch (err) {
+      if (err.message.includes('E11000')) {
+        throw new UnprocessableEntityException('Email already exists.');
+      }
+      throw err;
+    }
   }
 
   private async hashPassword(password: string) {
@@ -52,7 +63,7 @@ export class UsersService {
     const user = await this.usersRepository.findOne({ email });
     const passwordIsValid = await bcrypt.compare(password, user.password);
     if (!passwordIsValid) {
-      throw new UnauthorizedException('Invalid credentials.');
+      throw new UnauthorizedException('Credentials are not valid.');
     }
     return user;
   }
