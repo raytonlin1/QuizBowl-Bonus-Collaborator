@@ -42,7 +42,7 @@ const Profile = () => {
         size="large"
         startIcon={<UploadFile />}
       >
-        Upload Image
+        Upload Image (jpeg only)
         <input type="file" hidden onChange={handleFileUpload} />
       </Button>
     </Stack>
