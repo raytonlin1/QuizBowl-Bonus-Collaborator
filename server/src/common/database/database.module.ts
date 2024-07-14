@@ -12,11 +12,10 @@ import { DbMigrationService } from './db-migration.service';
       inject: [ConfigService],
     }),
   ],
-  providers: [DbMigrationService], 
+  providers: [DbMigrationService],
 })
 export class DatabaseModule {
   static forFeature(models: ModelDefinition[]) {
-    //Registers schemas into our app so we can use them in our repository
     return MongooseModule.forFeature(models);
   }
 }

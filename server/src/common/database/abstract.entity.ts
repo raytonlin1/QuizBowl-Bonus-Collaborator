@@ -3,7 +3,7 @@ import { Prop, Schema } from '@nestjs/mongoose';
 import { SchemaTypes, Types } from 'mongoose';
 
 @Schema()
-@ObjectType({ isAbstract: true }) //if isAbstract, fields can be extended by other schemas
+@ObjectType({ isAbstract: true })
 export class AbstractEntity {
   @Prop({ type: SchemaTypes.ObjectId })
   @Field(() => ID)
