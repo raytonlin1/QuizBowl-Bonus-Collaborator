@@ -4,49 +4,52 @@ import { User } from './entities/user.entity';
 import { CreateUserInput } from './dto/create-user.input';
 import { UpdateUserInput } from './dto/update-user.input';
 import { UseGuards } from '@nestjs/common';
-import { GqlAuthGuard } from 'src/auth/guards/gql-auth.guard';
-import { CurrentUser } from 'src/auth/current-user.decorator';
-import { TokenPayload } from 'src/auth/token-payload.interface';
+import { GqlAuthGuard } from '../auth/guards/gql-auth.guard';
+import { CurrentUser } from '../auth/current-user.decorator';
+import { TokenPayload } from '../auth/token-payload.interface';
+import { Types } from 'mongoose';
 
 @Resolver(() => User)
 export class UsersResolver {
   constructor(private readonly usersService: UsersService) {}
 
   @Mutation(() => User)
-  createUser(@Args('createUserInput') createUserInput: CreateUserInput) {
+  async createUser(
+    @Args('createUserInput') createUserInput: CreateUserInput,
+  ): Promise<User> {
     return this.usersService.create(createUserInput);
   }
 
   @Query(() => [User], { name: 'users' })
   @UseGuards(GqlAuthGuard)
-  findAll() {
+  async findAll(): Promise<User[]> {
     return this.usersService.findAll();
   }
 
   @Query(() => User, { name: 'user' })
   @UseGuards(GqlAuthGuard)
-  findOne(@Args('_id') _id: string) {
+  async findOne(@Args('_id') _id: string): Promise<User> {
     return this.usersService.findOne(_id);
   }
 
-  @Mutation(() => User) //Mutations are queries that update the database
+  @Mutation(() => User)
   @UseGuards(GqlAuthGuard)
-  updateUser(
+  async updateUser(
     @Args('updateUserInput') updateUserInput: UpdateUserInput,
     @CurrentUser() user: TokenPayload,
-  ) {
+  ): Promise<User> {
     return this.usersService.update(user._id, updateUserInput);
   }
 
   @Mutation(() => User)
   @UseGuards(GqlAuthGuard)
-  removeUser(@CurrentUser() user: TokenPayload) {
+  async removeUser(@CurrentUser() user: TokenPayload): Promise<User> {
     return this.usersService.remove(user._id);
   }
 
   @UseGuards(GqlAuthGuard)
   @Query(() => User, { name: 'me' })
-  getMe(@CurrentUser() user: TokenPayload) {
-    return user; //Returns if the current user is authenticated.
+  async getMe(@CurrentUser() user: TokenPayload): Promise<User> {
+    return { ...user, _id: new Types.ObjectId(user._id) };
   }
 }
