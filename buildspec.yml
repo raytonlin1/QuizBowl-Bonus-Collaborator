@@ -5,13 +5,13 @@ phases:
     runtime-versions:
       nodejs: 18
     commands:
-      - cd server && npm install -g pnpm
+      - cd server && npm install -g yarn
   pre_build:
     commands:
-      - pnpm install
+      - yarn install
   build:
     commands:
-      - pnpm build
+      - yarn run build
 artifacts:
   files:
     - '**/*'
