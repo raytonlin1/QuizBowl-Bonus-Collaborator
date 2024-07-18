@@ -15,7 +15,7 @@ export class S3Service {
     const clientConfig: S3ClientConfig = {};
 
     if (accessKeyId && secretAccessKey) {
-      clientConfig.region=region
+      clientConfig.region=region;
       clientConfig.credentials = {
         accessKeyId,
         secretAccessKey,
