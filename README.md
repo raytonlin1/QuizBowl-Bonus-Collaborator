@@ -5,7 +5,7 @@ This project was inspired by my love of learning things through quizbowl, but th
 It includes real-time chat with different logged in users, that can have different usernames and profile pictures. Built-in QBReader functionality using their API will be added.
 
 ### Chatting
-<img src="https://github-production-user-asset-6210df.s3.amazonaws.com/39320843/348932981-cb98a531-3cbc-4d53-b24e-bc964ea7b606.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAVCODYLSA53PQK4ZA%2F20240716%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20240716T035252Z&X-Amz-Expires=300&X-Amz-Signature=28338c8324cb138ec34c491e0329850c4571739260e6a03c099de3745de6ab05&X-Amz-SignedHeaders=host&actor_id=39320843&key_id=0&repo_id=805940002" alt="logo" width="750" height="auto">
+<img src="https://github.com/user-attachments/assets/8cf3bc83-aa3f-41fd-b56d-dc8b84c228ac" alt="logo" width="750" height="auto">
  </p>
 
 ## Technologies
