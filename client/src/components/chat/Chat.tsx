@@ -10,6 +10,9 @@ import {
   Paper,
   Stack,
   Typography,
+  AppBar, 
+  Button, 
+  Toolbar
 } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 import { useCreateMessage } from "../../hooks/useCreateMessage";
@@ -18,6 +21,9 @@ import { useGetMessages } from "../../hooks/useGetMessages";
 import { PAGE_SIZE } from "../../constants/page-size";
 import { useCountMessages } from "../../hooks/useCountMessages";
 import InfiniteScroll from "react-infinite-scroller";
+import Categories from "./Categories";
+import Difficulties from "./Difficulties";
+import api from "./scripts/api";
 
 const Chat = () => {
   const params = useParams();
@@ -34,8 +40,12 @@ const Chat = () => {
   const location = useLocation();
   const { messagesCount, countMessages } = useCountMessages(chatId);
 
+  const [categoriesAddVisible, setCategoriesAddVisible] = useState(false);
+  const [difficultiesAddVisible, setDifficultiesAddVisible] = useState(false);
+
   useEffect(() => {
     countMessages();
+
   }, [countMessages]);
 
   const scrollToBottom = () => divRef.current?.scrollIntoView();
@@ -54,6 +64,55 @@ const Chat = () => {
     setMessage("");
     scrollToBottom();
   };
+
+  const startBonus = async () => {
+    localStorage.setItem('currentBonusPart','0');
+    handleNextBonusPart();
+  }
+  
+  const handleNextBonusPart = async () => {
+    let currentBonusPart: number = 0;
+    let currentBonusQuestion: any = {};
+    if (Number(localStorage.getItem('currentBonusPart')) != undefined) {
+      currentBonusPart = Number(localStorage.getItem('currentBonusPart'));
+    }
+    if (Number(localStorage.getItem('currentBonusQuestion')) != undefined) {
+      currentBonusQuestion = JSON.parse(String(localStorage.getItem('currentBonusQuestion')));
+    }
+    console.log('start',localStorage.getItem('currentBonusQuestion'), localStorage.getItem('currentBonusPart'));
+    if (currentBonusPart === 0) {
+      await loadRandomBonuses();
+      currentBonusQuestion = JSON.parse(String(localStorage.getItem('currentBonusQuestion')));
+      localStorage.setItem('currentBonusQuestion', JSON.stringify(currentBonusQuestion));
+      console.log('mid',localStorage.getItem('currentBonusQuestion'), currentBonusQuestion, localStorage.getItem('currentBonusPart'));
+      await createMessage({
+        variables: { createMessageInput: { content: currentBonusQuestion.leadin, chatId } },
+      });
+    }
+    
+    console.log(localStorage.getItem('currentBonusQuestion'), localStorage.getItem('currentBonusPart'));
+    if (currentBonusPart % 2 === 1) {
+      await createMessage({
+        variables: { createMessageInput: { content: 'ANSWER: ' + currentBonusQuestion.answers[(currentBonusPart - 1) / 2], chatId } },
+      });
+    } else {
+      await createMessage({
+        variables: { createMessageInput: { content: currentBonusQuestion.parts[currentBonusPart / 2], chatId } },
+      });
+    }
+    if (currentBonusPart === 5) {
+      await createMessage({
+        variables: { createMessageInput: { content: 'SET: ' + currentBonusQuestion.set.name + ' / CATEGORY: ' + currentBonusQuestion.subcategory, chatId } },
+      });
+    }
+    scrollToBottom();
+    localStorage.setItem('currentBonusPart', String(((currentBonusPart + 1) % 6)));
+    console.log('end',localStorage.getItem('currentBonusQuestion'), localStorage.getItem('currentBonusPart'));
+  };
+  
+  const loadRandomBonuses = async () => {
+    await api.getRandomBonus().then(bonuses => {localStorage.setItem('currentBonusQuestion',JSON.stringify(bonuses[0]))});
+  }; // TODO: update params to add category/difficulty/number/etc
 
   return (
     <Stack sx={{ height: "100%", justifyContent: "space-between" }}>
@@ -147,6 +206,31 @@ const Chat = () => {
           <SendIcon />
         </IconButton>
       </Paper>
+      <Categories //TODO: UPDATE CATEGORIES TO HAVE CATEGORIES
+      open={categoriesAddVisible}
+      handleClose={() => setCategoriesAddVisible(false)}/>
+      <Difficulties 
+      open={difficultiesAddVisible}
+      handleClose={() => setDifficultiesAddVisible(false)}/>
+      <AppBar position="static" color="transparent">
+        <Toolbar>
+          {/* <IconButton size="large" edge="start" onClick={handleAddCategories}>
+            <Button variant="contained">Categories</Button>
+          </IconButton>
+          <IconButton size="large" edge="start" onClick={handleAddDifficulties}>
+            <Button variant="contained">Difficulties</Button>
+          </IconButton>
+          <IconButton size="large" edge="start" onClick={handleAddYearRange}>
+            <Button variant="contained">Year Range</Button>
+          </IconButton> */}
+          <IconButton size="large" edge="start" onClick={startBonus}>
+            <Button variant="contained" color="success">Start New Bonus</Button>
+          </IconButton>
+          <IconButton size="large" edge="start" onClick={handleNextBonusPart}>
+            <Button variant="contained" color="secondary">Next Bonus Clue/Answer</Button>
+          </IconButton>
+        </Toolbar>
+      </AppBar>
     </Stack>
   );
 };

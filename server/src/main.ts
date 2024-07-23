@@ -12,6 +12,9 @@ async function bootstrap() {
   app.use(cookieParser());
   app.setGlobalPrefix('/api');
   const configService = app.get(ConfigService);
+  if (configService.getOrThrow('NODE_ENV')=='development') {
+    app.enableCors();
+  }
   await app.listen(configService.getOrThrow('PORT'));
 }
 bootstrap();
