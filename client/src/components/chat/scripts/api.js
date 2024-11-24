@@ -114,6 +114,6 @@ export default class api {
     // }
   }
   
-  api.SET_LIST = await fetch('https://qbreader.org/api/set-list')
-    .then(response => response.json())
-    .then(data => data.setList);
+//   api.SET_LIST = await fetch('https://qbreader.org/api/set-list')
+//     .then(response => response.json())
+//     .then(data => data.setList);

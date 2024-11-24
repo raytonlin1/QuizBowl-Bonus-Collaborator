@@ -73,10 +73,10 @@ const Chat = () => {
   const handleNextBonusPart = async () => {
     let currentBonusPart: number = 0;
     let currentBonusQuestion: any = {};
-    if (Number(localStorage.getItem('currentBonusPart')) != undefined) {
+    if (Number(localStorage.getItem('currentBonusPart')) !== undefined) {
       currentBonusPart = Number(localStorage.getItem('currentBonusPart'));
     }
-    if (Number(localStorage.getItem('currentBonusQuestion')) != undefined) {
+    if (Number(localStorage.getItem('currentBonusQuestion')) !== undefined) {
       currentBonusQuestion = JSON.parse(String(localStorage.getItem('currentBonusQuestion')));
     }
     console.log('start',localStorage.getItem('currentBonusQuestion'), localStorage.getItem('currentBonusPart'));
