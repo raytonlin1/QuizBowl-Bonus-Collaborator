@@ -5,8 +5,9 @@ This project was inspired by my love of learning things through quizbowl, but th
 It includes real-time chat with different logged in users, that can have different usernames and profile pictures. Built-in QBReader functionality using their API will be added.
 
 ### Chatting
-<img src="https://github.com/user-attachments/assets/8cf3bc83-aa3f-41fd-b56d-dc8b84c228ac" alt="logo" width="750" height="auto">
+<img src="https://github.com/user-attachments/assets/8a8bdd14-9ca3-4c56-bf2b-930af217d661" alt="logo" width="750" height="auto">
  </p>
+
 
 ## Technologies
 This project is a monorepo with a combination of 2 npm projects, the backend server and the frontend UI. So there are two `package.json` configs.
