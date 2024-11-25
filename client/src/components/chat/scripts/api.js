@@ -65,7 +65,7 @@ export default class api {
     //{ alternateSubcategories=undefined, categories=undefined, difficulties=[4,5,6,7,8], maxYear=9999, minYear=2013, number=20, subcategories=undefined, threePartBonuses=true }
     //new URLSearchParams({ alternateSubcategories, categories, difficulties, maxYear, minYear, number, subcategories, threePartBonuses })
     static async getRandomBonus () {
-        return await fetch('https://qbreader.org/api/random-bonus?' 
+        return await fetch('https://www.qbreader.org/api/random-bonus?' 
             + new URLSearchParams({number: 1}))
         .then(response => response.json())
         .then(response => response.bonuses);
@@ -114,6 +114,6 @@ export default class api {
     // }
   }
   
-//   api.SET_LIST = await fetch('https://qbreader.org/api/set-list')
-//     .then(response => response.json())
-//     .then(data => data.setList);
+   api.SET_LIST = await fetch('https://www.qbreader.org/api/set-list')
+     .then(response => response.json())
+     .then(data => data.setList);
